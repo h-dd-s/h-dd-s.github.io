@@ -1,11 +1,20 @@
 ---
 title: "Haddi's Site"
+image: gambia.JPEG
+toc: false
+about: 
+  template: broadside
+  image-shape: rectangle
+  image-width: 25em
+  links: 
+    - text: GitHub Repository for Website
+      href: https://github.com/h-dd-s/h-dd-s.github.io
 ---
 
-This is a Quarto website.
+Hi! My name is Haddi and I am a senior in college! I created this page for my intro to data science class. I enjoy hiking, dancing, and hanging out with my friends. 
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{r}
-1 + 1
+
 ```
+
