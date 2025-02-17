@@ -1,5 +1,5 @@
 ---
-title: "h-dd-s.github.io"
+title: "Haddi's Site"
 ---
 
 This is a Quarto website.
