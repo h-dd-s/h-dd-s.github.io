@@ -1,6 +1,9 @@
 ---
 title: "PHD's Awarded in the US"
 author: "Haddi Sise"
+execute: 
+  warning: false
+  message: false
 ---
 
 link to original source: https://ncses.nsf.gov/pubs/nsf19301/data
@@ -8,11 +11,13 @@ link to original source: https://ncses.nsf.gov/pubs/nsf19301/data
 link to tidytuesday on github: https://github.com/rfordatascience/tidytuesday/tree/main/data/2019/2019-02-19
 
 ```{r}
+
 # loading necessary packages
 library(tidyverse)
 ```
 
 ```{r}
+
 # beginning data wrangling
 
 #load csv files into data frame that I can work with

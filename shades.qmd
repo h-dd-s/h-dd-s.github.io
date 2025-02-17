@@ -1,6 +1,9 @@
 ---
 title: "Makeup Shades"
 author: "Haddi Sise"
+execute: 
+  warning: false
+  message: false
 ---
 
 link to original source: https://pudding.cool/2021/03/foundation-names/
@@ -22,8 +25,9 @@ shades <-read.csv("shades data/allShades.csv")
 shades |>
   group_by(name) |>
   filter(!is.na(name)) |>
-  summarize(freq = n()) |>
-  filter(freq > 50)
+  summarize(ShadeName = name, freq = n()) |>
+  filter(freq > 50) |>
+  distinct()
 
 ```
 
