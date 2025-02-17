@@ -7,9 +7,14 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
-
+        text: "About Website Creator"
+      - text: "DataViz"
+        menu: 
+          - text: "Makeup Shades"
+            href: shades.qmd
+          - text: "PhDs Awarded in the US"
+            href: phd.qmd
+        
 format:
   html:
     theme: cosmo

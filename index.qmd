@@ -1,5 +1,5 @@
 ---
-title: "Haddi's Site"
+title: "About Haddi"
 image: gambia.JPEG
 toc: false
 about: 
