@@ -1,0 +1,44 @@
+---
+title: "Makeup Shades"
+author: "Haddi Sise"
+---
+
+link to original source: https://pudding.cool/2021/03/foundation-names/
+
+https://github.com/the-pudding/data/tree/master/foundation-names
+
+link to tidytuesday github: https://github.com/rfordatascience/tidytuesday/tree/main/data/2021/2021-03-30
+
+```{r}
+# loading necessary packages
+library(tidyverse)
+```
+
+```{r}
+# beginning data wrangling
+shades <-read.csv("shades data/allShades.csv")
+
+# get the most frequent shade names
+shades |>
+  group_by(name) |>
+  filter(!is.na(name)) |>
+  summarize(freq = n()) |>
+  filter(freq > 50)
+
+```
+
+```{r}
+shades |>
+  filter(name == "Deep" | name == "Fair" | name == "Ivory" | name == "Light" |
+           name == "Medium" | name == "Neutral" | name == "Porcelain" | 
+           name == "Tan" | name == "Warm") |>
+  ggplot(aes(x = hue, y = lightness, color = name)) +
+    geom_point()+
+    labs(
+      x = "Hue",
+      y = "Lightness",
+      title = "Hue and Lightness of Makeup Shades with Same Shade Name", 
+      color = "Name of Shade"
+      
+    )
+```
