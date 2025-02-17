@@ -1,0 +1,34 @@
+---
+title: "PHD's Awarded in the US"
+author: "Haddi Sise"
+---
+
+link to original source: https://ncses.nsf.gov/pubs/nsf19301/data
+
+link to tidytuesday on github: https://github.com/rfordatascience/tidytuesday/tree/main/data/2019/2019-02-19
+
+```{r}
+# loading necessary packages
+library(tidyverse)
+```
+
+```{r}
+# beginning data wrangling
+
+#load csv files into data frame that I can work with
+phds <- read.csv("phd_by_field.csv")
+
+phds |>
+  group_by(broad_field, year) |>
+  filter(!is.na(n_phds)) |>
+  summarize(tot_phds = sum(n_phds), year) |>
+  distinct() |>
+  ggplot(aes(x = year, y = tot_phds, color = broad_field)) +
+    geom_smooth()+
+    labs(
+      x = "Year",
+      y = "PHD's Awarded",
+      title = "PHD's Awarded in Various Fields",
+      color = "Broad Field of PHD"
+    )
+```
