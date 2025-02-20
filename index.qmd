@@ -3,8 +3,8 @@ title: "About Haddi"
 image: gambia.JPEG
 toc: false
 about: 
-  template: broadside
-  image-shape: rectangle
+  template: jolla
+  image-shape: round
   image-width: 25em
   links: 
     - text: GitHub Repository for Website

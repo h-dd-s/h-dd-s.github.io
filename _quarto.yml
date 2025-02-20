@@ -17,10 +17,11 @@ website:
         
 format:
   html:
-    theme: cosmo
+    theme: jolla
     css: styles.css
     toc: true
     code-fold: true
+    link-external-newwindow: true
 
 editor: visual
 

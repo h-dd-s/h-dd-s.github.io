@@ -6,43 +6,44 @@ execute:
   message: false
 ---
 
-link to original source: https://pudding.cool/2021/03/foundation-names/
+<h1>Foundation Shade Names</h1>
 
-https://github.com/the-pudding/data/tree/master/foundation-names
-
-link to tidytuesday github: https://github.com/rfordatascience/tidytuesday/tree/main/data/2021/2021-03-30
+This data was provided by Amber Thomas to produce an article in collaboration with Pudding written by Ofunne Amaka. The <a href=https://pudding.cool/2021/03/foundation-names/>article</a> talks about how the names of shades in complexion products reveal bias. The <a href=https://github.com/the-pudding/data/tree/master/foundation-names>code</a> written by Amber Thomas uses the Sephora and Ulta websites to gather information about various shade names of complexion products from various companies. In order to analyze how similar shades of the same names were to each other, I used the tidy tuesday data that can be found <a href=https://github.com/rfordatascience/tidytuesday/tree/main/data/2021/2021-03-30>here</a>.
 
 ```{r}
-# loading necessary packages
+# loading necessary packages and data
 library(tidyverse)
+shades <-read.csv("shades data/allShades.csv")
 ```
 
 ```{r}
-# beginning data wrangling
-shades <-read.csv("shades data/allShades.csv")
+echo = FALSE
 
+# beginning data wrangling
 # get the most frequent shade names
-shades |>
+specific_shades <- shades |>
   group_by(name) |>
   filter(!is.na(name)) |>
-  summarize(ShadeName = name, freq = n()) |>
-  filter(freq > 50) |>
+  summarize(freq = n()) |>
+  filter(freq > 60) |>
   distinct()
 
 ```
 
 ```{r}
 shades |>
-  filter(name == "Deep" | name == "Fair" | name == "Ivory" | name == "Light" |
-           name == "Medium" | name == "Neutral" | name == "Porcelain" | 
-           name == "Tan" | name == "Warm") |>
+  filter(name == "Deep" | name == "Fair" |  name == "Light" |
+        name == "Medium" | name == "Neutral" | name == "Warm") |>
   ggplot(aes(x = hue, y = lightness, color = name)) +
-    geom_point()+
+    geom_point() +
     labs(
       x = "Hue",
       y = "Lightness",
       title = "Hue and Lightness of Makeup Shades with Same Shade Name", 
       color = "Name of Shade"
-      
-    )
+    ) +
+    theme_classic() +
+    facet_wrap(~name)
 ```
+
+I used hue and lightness to compare the shade matches between foundation shades with the same name. The lightness and hue are clustered pretty well for shades like light and fair but get worse as you approach medium and are not very good for the deep shades. While shades named after undertones like neutral and warm have poor clusters. This validates a lot of complaints by women about inconsistency in shade names across different brands.
