@@ -8,14 +8,14 @@ website:
     left:
       - href: index.qmd
         text: "About Website Creator"
+      - href: characanalysis.qmd 
+        text: "Full Text Analysis"
       - text: "DataViz"
         menu: 
           - text: "Makeup Shades"
             href: shades.qmd
           - text: "PhDs Awarded in the US"
             href: phd.qmd
-      - href: characanalysis.qmd 
-        text: "Full Text Analysis"
       
         
 format:
