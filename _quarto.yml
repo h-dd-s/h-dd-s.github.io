@@ -14,6 +14,9 @@ website:
             href: shades.qmd
           - text: "PhDs Awarded in the US"
             href: phd.qmd
+      - href: characanalysis.qmd 
+        text: "Full Text Analysis"
+      
         
 format:
   html:

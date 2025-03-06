@@ -1,0 +1,73 @@
+---
+title: "Analyzing Friends Dialogue"
+author: "Haddi Sise"
+execute: 
+  warning: false
+  message: false
+---
+
+<h1>Analyzing Friends Dialogue</h1>
+
+This data was obtained from user EmilHvitfeldt on Github. You can find the link <a friends/data at master · EmilHvitfeldt/friends · GitHub>here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.
+
+```{r}
+# load packages
+library(tidyverse)
+```
+
+```{r}
+# load data sets 
+load(file="friendsdata/friends.rda")
+load(file="friendsdata/friends_info.rda")
+```
+
+```{r}
+# how many times is the word date, dating, or dated is said per episode depending on the year
+
+basic_info <- friends_info |>
+  mutate(year_aired = str_sub(air_date, 1,4))|>
+  group_by(year_aired)|>
+  mutate(numepyear = n()) |>
+  select(season, episode, year_aired, numepyear)
+
+friend_date <- friends |>
+  left_join(basic_info, by = c("season", "episode")) |>
+  group_by(year_aired) |>
+  filter(str_detect(text, "(?i)\\bdate|dating\\b") == TRUE) |>
+  summarise(date_ment = n(), numepyear)  |>
+  distinct() |>
+  mutate(datepeppyear = date_ment/numepyear)
+
+ggplot(friend_date, aes(x = year_aired, y = datepeppyear)) +
+  geom_col() +
+  theme_bw() +
+  labs(
+    x = "Year Aired",
+    y = "Number of times date said per episode",
+    title = "Concept of Dating Mentioned Over the Years in Friends Dialogue"
+  )
+```
+
+In 1995,1996, 1998, and 1999 the word date was said a lot less often in friends. I have never watched friends but I assume that during these years, the main characters were in more long term relationships. This is probably why we see a dip in 2004 as well because they are wrapping up the show and giving the characters happy endings with a partner. Again this paragraph is written by someone who has never watched friends.
+
+```{r}
+# in the titles how common is it for a main character to get mentioned
+
+main <- friends_info |>
+  filter(str_detect(title,"The One") == TRUE) |>
+  mutate(title = str_replace(title, "The One ", "The One:")) |>
+  mutate(spec_title = str_extract(title, "(?<=:).+"))|>
+  mutate(main_char = if_else(str_detect(spec_title, 
+                                "(?i)\\bchandler|monica|joey|phoebe|rachel|ross\\b"), str_extract(spec_title, 
+                                "(?i)\\bchandler|monica|joey|phoebe|rachel|ross\\b"), "None"))
+  
+
+ggplot(main, aes(fill = main_char, x = main_char, y = us_views_millions)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(x = "Main Character in Title",
+       y = "Episode Views in millions",
+       title = "Friends Episode Viewership Based on Main Character in Title") 
+```
+
+Having some characters names in the title leads to a higher mean of viewers like Monica and Chandler but having Ross' name in the title leads to a lower mean of viewers. Having the other main characters names in the tile leads to a similar mean value as having no main character name in the title at all. Overall there is a lot of overlap and the differences are not that significant. If I had a show and I wanted to know if putting certain characters names in the titles lead to more views than I would appreciate that knowledge.
