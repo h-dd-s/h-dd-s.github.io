@@ -1,0 +1,90 @@
+---
+title: "Simulation Study"
+author: "Haddi Sise"
+execute: 
+  warning: false
+  message: false
+---
+
+The simulation I am running will be about how many schools a medical school applicant is likely to get into. First I am using the data from the 2024 matriculant data from AAMC into US Medical Schools, the data set can be found <a href=https://www.aamc.org/data-reports/students-residents/data/facts-applicants-and-matriculants>here</a>. I will be using this to have a list of schools with their state location and the acceptance rate of each school. The first part of the simulation will pick 20 random schools because most applicants usually apply to that many. Then it will pick a number between 0 and 100 if the number is lower than the acceptance rate than it will count how it as them getting into the school.Then I will run a secon similation to see how it differs if someone is from a region and would like to stay in that region. When running this simulation, I made it so that the number was between 0 and 50 because of in-state or same region preferences that some schools have. 
+
+```{r}
+library(tidyverse)
+library(openxlsx)
+```
+
+```{r}
+# open up the data and calculate acceptance rates
+medschool <- read.xlsx("mdsimdata.xlsx", sheet = "Usable") |>
+  mutate(acceptrate = matriculants/applicants)
+
+northeast <-("CT|DC|MA|MD|NH|NJ|NY|PA|RI|VT")
+south <- ("AL|AR|FL|GA|KY|KS|LA|NC|NE|OK|SC|TN|TX|VA|WV")
+west <- ("AZ|CA|CO|HI|NM|NV|OR|UT|WA|WY")
+midwest <- ("IA|IL|IN|MI|MO|MN|ND|OH|SD|WI")
+
+reg_medschool <- medschool |>
+  mutate(state = str_sub(state, 1,2)) |>
+  mutate(region = ifelse(str_detect(state, midwest) , "Midwest",
+           ifelse(str_detect(state, south), "South", 
+                  ifelse(str_detect(state, west) , "West", "Northeast"
+             ))))
+```
+
+```{r}
+accepted <- function(numschools){
+  medschool |>
+    sample_n(numschools) |>
+    mutate(qual = runif(numschools)) |>
+    mutate(gotin = ifelse(qual < acceptrate, 1, 0)) |>
+    summarize(numaccept = sum(gotin))
+}
+```
+
+```{r}
+trials <- rep(c(20), 500)
+
+sim <- map_df(trials, accepted)|>
+  rbind() 
+
+ggplot(sim) +
+  geom_histogram(aes(x = numaccept)) +
+  labs(
+    x = "Number of Schools Accepted",
+    y = "Number of Applicants",
+    title = "Amount of Medical Schools Accepted Into When Applying to 20 Schools"
+  )
+```
+This histogram shows how selective medical schools are and that if you are getting into multiple schools you have to be a really good candidate.
+```{r}
+
+reg_opt <-c("Midwest", "South", "West", "Northeast")
+
+accepted_by_region <- function(numschools){
+  reg_select <- sample.int(4, 1)
+  reg_medschool |>
+    filter(region == reg_opt[reg_select]) |>
+    sample_n(size = numschools) |>
+    mutate(qual = runif(numschools, min = 0, max = 0.5)) |>
+    mutate(gotin = ifelse(qual < acceptrate, 1, 0)) |>
+    group_by(region) |>
+    summarize(numaccept = sum(gotin))
+}
+```
+
+```{r}
+trials <- rep(c(20), 500)
+
+sim <- map_df(trials, accepted_by_region)|>
+  rbind() 
+
+ggplot(sim) +
+  geom_histogram(aes(x = numaccept, fill = region)) +
+  labs(
+    x = "Number of Schools Accepted",
+    y = "Number of Applicants",
+    title = "Amount of Medical Schools Accepted Into When Applying to 20 Schools"
+  ) +
+  facet_wrap(~region)
+```
+This histogram makes it seem like schools in the Northeast are more likely to accep people than any other region. It may be helpful to see these graphs represented in proportions to have a more firm stance on how medical school acceptance may differ based on region. This also incorporates a big assumption that being a local to a region makes you a more attractive candidate. Some things I would do to improve my sim in the future is create a function with more variables. The schools would have public or private so then I could do an if else for region preference. 

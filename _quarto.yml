@@ -8,6 +8,8 @@ website:
     left:
       - href: index.qmd
         text: "About Website Creator"
+      - href: mdphdsim.qmd
+        text: "MD Application Simulation"
       - href: characanalysis.qmd 
         text: "Full Text Analysis"
       - text: "DataViz"

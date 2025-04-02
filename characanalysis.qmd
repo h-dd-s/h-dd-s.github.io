@@ -8,7 +8,7 @@ execute:
 
 <h1>Analyzing Friends Dialogue</h1>
 
-This data was obtained from user EmilHvitfeldt on Github. You can find the link \<a friends/data at master · EmilHvitfeldt/friends · GitHub\>here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.
+This data was obtained from user EmilHvitfeldt on Github. You can find the link \<a href=https://github.com/EmilHvitfeldt/friends/tree/master/data\>here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.
 
 ```{r}
 # load packages
