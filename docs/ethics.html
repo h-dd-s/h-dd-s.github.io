@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Haddi Sise">
 
-<title>Haddi’s Site - Makeup Shades</title>
+<title>Haddi’s Site - Ethics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -120,7 +85,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">About Website Creator</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./ethics.html" rel="" target="">
+    <a class="nav-link active" href="./ethics.html" rel="" target="" aria-current="page">
  <span class="menu-text">Ethics</span></a>
   </li>  
   <li class="nav-item">
@@ -165,19 +130,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Makeup Shades</h1>
+<h1 class="title">Ethics</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Haddi Sise </p>
-          </div>
-  </div>
     
   
     
@@ -187,58 +146,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <h1>
-Foundation Shade Names
+Target and Pregnancy Predictions
 </h1>
-<p>This data was provided by Amber Thomas to produce an article in collaboration with Pudding written by Ofunne Amaka. The <a href="https://pudding.cool/2021/03/foundation-names/">article</a> talks about how the names of shades in complexion products reveal bias. The <a href="https://github.com/the-pudding/data/tree/master/foundation-names">code</a> written by Amber Thomas uses the Sephora and Ulta websites to gather information about various shade names of complexion products from various companies. In order to analyze how similar shades of the same names were to each other, I used the tidy tuesday data that can be found <a href="https://github.com/rfordatascience/tidytuesday/tree/main/data/2021/2021-03-30">here</a>.</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loading necessary packages and data</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>shades <span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"shades data/allShades.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>echo <span class="ot">=</span> <span class="cn">FALSE</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># beginning data wrangling</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the most frequent shade names</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>specific_shades <span class="ot">&lt;-</span> shades <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">|&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(name)) <span class="sc">|&gt;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq <span class="sc">&gt;</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>shades <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">"Deep"</span> <span class="sc">|</span> name <span class="sc">==</span> <span class="st">"Fair"</span> <span class="sc">|</span>  name <span class="sc">==</span> <span class="st">"Light"</span> <span class="sc">|</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        name <span class="sc">==</span> <span class="st">"Medium"</span> <span class="sc">|</span> name <span class="sc">==</span> <span class="st">"Neutral"</span> <span class="sc">|</span> name <span class="sc">==</span> <span class="st">"Warm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hue, <span class="at">y =</span> lightness, <span class="at">color =</span> name)) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Hue"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Lightness"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Hue and Lightness of Makeup Shades with Same Shade Name"</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"Name of Shade"</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="shades_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>I used hue and lightness to compare the shade matches between foundation shades with the same name. The lightness and hue are clustered pretty well for shades like light and fair but get worse as you approach medium and are not very good for the deep shades. While shades named after undertones like neutral and warm have poor clusters. This validates a lot of complaints by women about inconsistency in shade names across different brands.</p>
+<p>A 2012 article in the New York Times tells the story of how Target created a pregnancy predictor. Andrew Pole, a statistician began working at Target in 2002. Two colleagues in the marketing department asked him if he could predict if a customer was pregnant even if she did not want them to know. They went on this journey of creating an algorithm to predict pregnancy because of the fact that new parents are a holy grail for retailers. Most people remain consistent in their shopping habits and it is hard to change them as a retailer. The prime time to change people’s shopping habits is when they go through a big change in life, becoming parents is one of those changes. Wanting to seize the opportunity to gain new customers or change the shopping habits of infrequent customers, Target developed this algorithm and used it to advertise ads for baby items to pregnant women. This algorithm was allegly so specific it could estimate the month that the baby is due based on a woman’s change in shopping habits. This algorithm tracks 25 items that when analyzed together could give rise to a pregnancy score. An example of some of these items are unscented lotion, a large purse that could double as a diaper bag, and zinc and magnesium supplements.</p>
+<p><a href="https://www.nytimes.com/2012/02/19/magazine/shopping-habits.html?smid=url-share">Source</a></p>
+<p>An article by the Medium in 2020 dissects this article by the New York Times and addresses how the article might make the algorithm seem more advanced than it actually is. The original New York Times article, emphasizes a story where a father finds out that his teenage daughter was pregnant through the ads. The Medium article argues that the odds of Andrew Pole finding out that this happened in a random target is low and there is no proof that the target algorithm predicted that this specific girl was pregnant as opposed to her getting a random ad that happened to have some maternity things. The article then states that even if the story is true, it does not tell us about how good the algorithm itself is. The article uses the New York Times article as an example of how not to report an algorithm. This article advocates for the reporting of accuracy, false positive rate, false negative rate, precision, and recall of these algorithms so people can really gain a sense of how effective these algorithms are.</p>
+<p><a href="https://medium.com/\@colin.fraser/target-didnt-figure-out-a-teen-girl-was-pregnant-before-her-father-did-a6be13b973a5\">Source&lt;/a&gt;</a></p><a href="https://medium.com/\@colin.fraser/target-didnt-figure-out-a-teen-girl-was-pregnant-before-her-father-did-a6be13b973a5\">
+<p>However, neither of these articles address the fact that there is no consent from customers to do this. Even in the original article with an interview with Andrew Pole, his colleagues in the marketing department state they would like to know that the customer is pregnant even if she does not want them to know she was pregnant. On their website, they probably have the little cookies warning that tells them that they are tracking their information or if they become a member of a rewards program the customers are not aware that they are using the shopping history in order to predict whether they are pregnant or not. This sort of algorithm exists outside of the ordinary person’s imagination of what a company could do with their data.</p>
+<p>One good thing about the data is that it was not publicly made available. Target has specific customer ids for each shopper and it is possible that if this data was publicly made available it could be used in other companies to predict pregnancy or it could reveal private information about a lot of people.</p>
+<p>The people who were measured were customers at Target. These individuals were the intended audience of target for who the algorithm was intended for. There is no indication that they were informed that their data would be used for this specific algorithm. If this data was publicly made available it should not be analyzed because there is no indication that the customers were willing participants in the study to create this specific algorithm.</p>
+<p>The observations for the algorithm are based on 25 items and how these were collected began with finding customers registered for a baby registry. Pole then found that women who were registered were buying unscented lotion early in their pregnancies. Then another analyst noticed that pregnant women were buying zinc and magnesium supplements sometime in the first 20 weeks. This practice of using the baby registry shows that participants in the study did not know or give their permission for their data to be used to create an invasive algorithm like this. Informed consent could have been possible by creating a survey for pregnant customers or customers that have previously been pregnant asking what products helped them while pregnant or what products they bought a lot of when pregnant. They could have compared the top results to the customer profiles of all the pregnant people who filled out the survey.</p>
 
 
 
-</main> <!-- /main -->
+</a></main><a href="https://medium.com/\@colin.fraser/target-didnt-figure-out-a-teen-girl-was-pregnant-before-her-father-did-a6be13b973a5\"> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -486,8 +407,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
 });
 </script>
-</div> <!-- /content -->
+</a></div><a href="https://medium.com/\@colin.fraser/target-didnt-figure-out-a-teen-girl-was-pregnant-before-her-father-did-a6be13b973a5\"> <!-- /content -->
 
 
 
-</body></html>
+</a></body></html>
