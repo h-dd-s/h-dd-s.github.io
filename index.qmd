@@ -11,10 +11,8 @@ about:
       href: https://github.com/h-dd-s/h-dd-s.github.io
 ---
 
-Hi! My name is Haddi and I am a senior in college! I created this page for my intro to data science class. I enjoy hiking, dancing, and hanging out with my friends. 
-
+Hi! My name is Haddi and I am a senior in college! I created this page for my intro to data science class. I enjoy hiking, dancing, and hanging out with my friends.
 
 ```{r}
 
 ```
-

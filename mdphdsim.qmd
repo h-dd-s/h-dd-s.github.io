@@ -6,7 +6,7 @@ execute:
   message: false
 ---
 
-The simulation I am running will be about how many schools a medical school applicant is likely to get into. First I am using the data from the 2024 matriculant data from AAMC into US Medical Schools, the data set can be found <a href=https://www.aamc.org/data-reports/students-residents/data/facts-applicants-and-matriculants>here</a>. I will be using this to have a list of schools with their state location and the acceptance rate of each school. The first part of the simulation will pick 20 random schools because most applicants usually apply to that many. Then it will pick a number between 0 and 100 if the number is lower than the acceptance rate than it will count how it as them getting into the school.Then I will run a secon similation to see how it differs if someone is from a region and would like to stay in that region. When running this simulation, I made it so that the number was between 0 and 50 because of in-state or same region preferences that some schools have. 
+The simulation I am running will be about how many schools a medical school applicant is likely to get into. First I am using the data from the 2024 matriculant data from AAMC into US Medical Schools, the data set can be found <a href=https://www.aamc.org/data-reports/students-residents/data/facts-applicants-and-matriculants>here</a>. I will be using this to have a list of schools with their state location and the acceptance rate of each school. The first part of the simulation will pick 20 random schools because most applicants usually apply to that many. Then it will pick a number between 0 and 100 if the number is lower than the acceptance rate than it will count how it as them getting into the school.Then I will run a secon similation to see how it differs if someone is from a region and would like to stay in that region. When running this simulation, I made it so that the number was between 0 and 50 because of in-state or same region preferences that some schools have.
 
 ```{r}
 library(tidyverse)
@@ -55,7 +55,9 @@ ggplot(sim) +
     title = "Amount of Medical Schools Accepted Into When Applying to 20 Schools"
   )
 ```
+
 This histogram shows how selective medical schools are and that if you are getting into multiple schools you have to be a really good candidate.
+
 ```{r}
 
 reg_opt <-c("Midwest", "South", "West", "Northeast")
@@ -87,4 +89,5 @@ ggplot(sim) +
   ) +
   facet_wrap(~region)
 ```
-This histogram makes it seem like schools in the Northeast are more likely to accep people than any other region. It may be helpful to see these graphs represented in proportions to have a more firm stance on how medical school acceptance may differ based on region. This also incorporates a big assumption that being a local to a region makes you a more attractive candidate. Some things I would do to improve my sim in the future is create a function with more variables. The schools would have public or private so then I could do an if else for region preference. 
+
+This histogram makes it seem like schools in the Northeast are more likely to accep people than any other region. It may be helpful to see these graphs represented in proportions to have a more firm stance on how medical school acceptance may differ based on region. This also incorporates a big assumption that being a local to a region makes you a more attractive candidate. Some things I would do to improve my sim in the future is create a function with more variables. The schools would have public or private so then I could do an if else for region preference.
