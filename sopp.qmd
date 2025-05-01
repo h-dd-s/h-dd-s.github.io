@@ -1,6 +1,14 @@
 ---
-title: "Project 5"
+title: "Stanford Open Policing Project"
+author: "Haddi Sise"
+execute: 
+  warning: false
+  message: false
 ---
+
+<h1>Stanford Open Policing Project</h1>
+
+In this project, I used data compiled by Pierson et. al in 2020. The data and more about the Stanford Open Policing Project can be found on their website (<a href="https://openpolicing.stanford.edu"\>Click Here\</a\>).
 
 ```{r}
 library(RMariaDB)
@@ -21,10 +29,31 @@ DBI::dbListTables(con_traffic)
 
 ```{sql}
 #| connection: con_traffic
+#| output.var: "race_warning_citation"
 
-DESCRIBE ca_los_angeles_2020_04_01
+SELECT subject_sex,
+  subject_race,
+  AVG(warning_issued) AS perc_warning
+FROM wa_statewide_2020_04_01
+GROUP BY subject_race, subject_sex
+HAVING subject_sex IS NOT NULL AND subject_race IS NOT NULL
+ORDER BY subject_race DESC;
 
 ```
+
+```{r}
+race_warning_citation |>
+  ggplot(aes(x = subject_race, y = perc_warning)) +
+    geom_col(aes(fill = subject_race)) +
+    labs(
+      x = "Race of Subject",
+      y = "Percentage of Warnings",
+      title = "Percentage of Warnings in Washington State Traffic Stops by Race and Sex"
+    ) +
+    facet_grid(~subject_sex)
+```
+
+This graph represents the proportion of traffic stops that end in warnings by race and gender in Washington State. Hispanic women seem to be slightly more likely than any other demographic to get a warning. Asian men and women are less likely to be let off with a warning than the other demographics. I am interested in how much negative stereotypes contribute to this result.
 
 ```{sql}
 #| connection: con_traffic
@@ -33,21 +62,44 @@ DESCRIBE ca_los_angeles_2020_04_01
 
 SELECT subject_sex,
   SUM(1) AS total,
-  'SF' AS CITY
+  'SF' AS city,
+  SUBSTRING(time, 1, 2) AS hour
 FROM ca_san_francisco_2020_04_01
-GROUP BY subject_sex
+WHERE time IS NOT NULL
+GROUP BY subject_sex, hour
 
 UNION
 
 SELECT subject_sex,
   SUM(1) AS total,
-  'LA' AS CITY
+  'LA' AS city,
+  SUBSTRING(time, 1, 2) AS hour
 FROM ca_los_angeles_2020_04_01
-
-GROUP BY subject_sex;
+WHERE time IS NOT NULL
+GROUP BY subject_sex, hour;
 
 ```
 
 ```{r}
-
+ca_sex_stops |>
+  mutate(hour = as.numeric(hour)) |>
+  group_by(city) |>
+  mutate(total_stops = sum(total)) |>
+  ungroup()|>
+  mutate(prop_stops = total/total_stops) |>
+  ggplot(aes(x = hour, y = prop_stops, color = subject_sex)) +
+    geom_line() +
+    labs(
+      x = "Hour of the Day",
+      y = "Proportion of Stops",
+      Title = "Proportion of Stops in San Francisco vs California at Various Times of the Day"
+    ) +
+    theme_classic()+
+    facet_grid(~city)
 ```
+
+This graph represents proportion of stops that happen throughout different times of the day in San Francisco and LA separated by gender. One very obvious trend is that men are more likely to be pulled over. The least amount of traffic stops happen around 5 AM. In LA the peak time for traffic stops is 8 PM but in San Francisco the peak time for traffic stops is arounf 11 PM.
+
+<h3>References</h3>
+
+Pierson, Emma, Camelia Simoiu, Jan Overgoor, Sam Corbett-Davies, Daniel Jenson, Amy Shoemaker, Vignesh Ramachandran, et al. 2020. \"A Large-Scale Analysis of Racial Disparities in Police Stops Across the United States.\" *Nature Human Behaviour*, 1--10.
