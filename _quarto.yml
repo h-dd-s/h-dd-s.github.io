@@ -8,6 +8,8 @@ website:
     left:
       - href: index.qmd
         text: "About Website Creator"
+      - href: sopp.qmd
+        text: "Stanford Open Policing Project"
       - href: ethics.qmd
         text: "Ethics"
       - href: mdphdsim.qmd
