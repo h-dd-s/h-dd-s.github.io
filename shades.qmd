@@ -28,13 +28,21 @@ specific_shades <- shades |>
   filter(freq > 60) |>
   distinct()
 
+#get the colors for the shades
+hexes <- shades |>
+  filter(name == "Deep" | name == "Fair" |  name == "Light" |
+        name == "Medium" | name == "Neutral" | name == "Warm") |>
+  arrange(hex)
+
+hex_v <- as.list(hexes[["hex"]])
 ```
 
 ```{r}
 shades |>
   filter(name == "Deep" | name == "Fair" |  name == "Light" |
         name == "Medium" | name == "Neutral" | name == "Warm") |>
-  ggplot(aes(x = hue, y = lightness, color = name)) +
+  arrange(hex)|>
+  ggplot(aes(x = hue, y = lightness, color = hex)) +
     geom_point() +
     labs(
       x = "Hue",
@@ -43,6 +51,8 @@ shades |>
       color = "Name of Shade"
     ) +
     theme_classic() +
+    guides(color = "none") +
+    scale_color_manual(values = hex_v) +
     facet_wrap(~name)
 ```
 
