@@ -16,6 +16,8 @@ website:
         text: "MD Application Simulation"
       - href: characanalysis.qmd 
         text: "Full Text Analysis"
+      - href: presentation.qmd
+        text: "Presentation"
       - text: "DataViz"
         menu: 
           - text: "Makeup Shades"

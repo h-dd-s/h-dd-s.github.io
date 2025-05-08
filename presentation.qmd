@@ -1,0 +1,122 @@
+---
+title: "Medical School Acceptance Simulation"
+author: "Haddi Sise"
+format: 
+  revealjs:
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    embed-resources: true
+execute: 
+  warning: false
+  echo: true
+  message: false
+---
+
+## The Data
+
+<p>From the AAMC website, I took a data table titled "U.S. MD-Granting Medical School Applications and Matriculants by School, State of Legal Residence, and Gender, Academic Year 2024-2025"</p>
+
+<img src="Untidy Data.png" alt="Data from AAMC"/>
+
+## The Approach to Creating the Simulation
+
+1.  From matriculants and applications calculate acceptance rate for each school
+
+2.  Create a function in which an "applicant" selects twenty random schools
+
+3.  Repeat the function 500 times
+
+4.  Graph the number of applicants vs the number of schools accepted
+
+## Tidying The Data
+
+```{r}
+library(tidyverse)
+library(openxlsx)
+
+# open up the data and calculate acceptance rates
+medschool <- read.xlsx("mdsimdata.xlsx", sheet = "Usable") |>
+  mutate(acceptrate = matriculants/applicants)
+
+northeast <-("CT|DC|MA|MD|NH|NJ|NY|PA|RI|VT")
+south <- ("AL|AR|FL|GA|KY|KS|LA|NC|NE|OK|SC|TN|TX|VA|WV")
+west <- ("AZ|CA|CO|HI|NM|NV|OR|UT|WA|WY")
+midwest <- ("IA|IL|IN|MI|MO|MN|ND|OH|SD|WI")
+
+reg_medschool <- medschool |>
+  mutate(state = str_sub(state, 1,2)) |>
+  mutate(region = ifelse(str_detect(state, midwest) , "Midwest",
+           ifelse(str_detect(state, south), "South", 
+                  ifelse(str_detect(state, west) , "West", "Northeast"
+             ))))
+```
+
+## The Original Function
+
+```{r}
+accepted <- function(numschools){
+  medschool |>
+    sample_n(numschools) |>
+    mutate(qual = runif(numschools)) |>
+    mutate(gotin = ifelse(qual < acceptrate, 1, 0)) |>
+    summarize(numaccept = sum(gotin))
+}
+```
+
+## Results
+
+```{r}
+trials <- rep(c(20), 500)
+
+sim <- map_df(trials, accepted)|>
+  rbind()
+
+ggplot(sim) +
+  geom_histogram(aes(x = numaccept)) +
+  labs(
+    x = "Number of Schools Accepted",
+    y = "Number of Applicants",
+    title = "Amount of Medical Schools Accepted Into When Applying to 20 Schools"
+  ) +
+  theme_classic()
+```
+
+## The Updated Function
+
+```{r}
+accepted <- function(numschools){
+  gen_qual = runif(1)
+  medschool |>
+    sample_n(numschools) |>
+    mutate(qual = rnorm(numschools, mean = gen_qual, sd = 0.1)) |>
+    mutate(gotin = ifelse(qual < acceptrate, 1, 0)) |>
+    summarize(numaccept = sum(gotin))
+}
+```
+
+## Results
+
+```{r}
+trials <- rep(c(20), 500)
+
+sim <- map_df(trials, accepted)|>
+  rbind() 
+
+ggplot(sim) +
+  geom_histogram(aes(x = numaccept)) +
+  labs(
+    x = "Number of Schools Accepted",
+    y = "Number of Applicants",
+    title = "Amount of Medical Schools Accepted Into When Applying to 20 Schools"
+  ) +
+  theme_classic()
+```
+
+## Future Directions
+
+-   Seeing how gender might affect the simulation
+
+-   Introducing In-State Bias
+
+## Thanks!! {#sec-thanks}
