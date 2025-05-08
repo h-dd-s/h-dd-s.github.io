@@ -7,6 +7,7 @@ format:
     slide-number: true
     show-slide-number: all
     embed-resources: true
+    code-fold: false
 execute: 
   warning: false
   echo: true
@@ -120,3 +121,5 @@ ggplot(sim) +
 -   Introducing In-State Bias
 
 ## Thanks!! {#sec-thanks}
+
+Association of American Medical Colleges. <i>Facts: Applicants and Matriculants Data</i>. AAMC, https://www.aamc.org/data-reports/students-residents/data/facts-applicants-and-matriculants.

@@ -8,7 +8,7 @@ execute:
 
 <h1>Stanford Open Policing Project</h1>
 
-In this project, I used data compiled by Pierson et. al in 2020. The data and more about the Stanford Open Policing Project can be found on their website (<a href="https://openpolicing.stanford.edu"\>Click Here\</a\>).
+In this project, I used data compiled by Pierson et. al in 2020. The data and more about the Stanford Open Policing Project can be found on their website (\<a href="https://openpolicing.stanford.edu"\>Click Here\</a\>).
 
 ```{r}
 library(RMariaDB)
@@ -102,4 +102,4 @@ This graph represents proportion of stops that happen throughout different times
 
 <h3>References</h3>
 
-Pierson, Emma, Camelia Simoiu, Jan Overgoor, Sam Corbett-Davies, Daniel Jenson, Amy Shoemaker, Vignesh Ramachandran, et al. 2020. \"A Large-Scale Analysis of Racial Disparities in Police Stops Across the United States.\" *Nature Human Behaviour*, 1--10.
+Pierson, Emma, Camelia Simoiu, Jan Overgoor, Sam Corbett-Davies, Daniel Jenson, Amy Shoemaker, Vignesh Ramachandran, et al. 2020. "A Large-Scale Analysis of Racial Disparities in Police Stops Across the United States." *Nature Human Behaviour*, 1--10.
