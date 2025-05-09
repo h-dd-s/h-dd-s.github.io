@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>
 Analyzing Friends Dialogue
 </h1>
-<p>This data was obtained from user EmilHvitfeldt on Github. You can find the link <a href="https://https://github.com/EmilHvitfeldt/friends/tree/master/data">here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.</p>
+<p>This data was obtained from user EmilHvitfeldt on Github. You can find the link <a href="https://github.com/EmilHvitfeldt/friends/tree/master/data">here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -245,7 +245,7 @@ Analyzing Friends Dialogue
 <p><img src="characanalysis_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>In 1995,1996, 1998, and 1999 the word date was said a lot less often in friends. I have never watched friends but I assume that during these years, the main characters were in more long term relationships. This is probably why we see a dip in 2004 as well because they are wrapping up the show and giving the characters happy endings with a partner. Again this paragraph is written by someone who has never watched friends.</p>
+<p>In 1995,1996, 1998, and 1999 the word date was said a lot less often in friends. I have never watched Friends but I assume that during these years, the main characters were in more long term relationships. This is probably why we see a dip in 2004 as well because they are wrapping up the show and giving the characters happy endings with a partner. Again this paragraph is written by someone who has never watched Friends.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -257,21 +257,32 @@ Analyzing Friends Dialogue
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">spec_title =</span> <span class="fu">str_extract</span>(title, <span class="st">"(?&lt;=:).+"</span>))<span class="sc">|&gt;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">main_char =</span> <span class="fu">if_else</span>(<span class="fu">str_detect</span>(spec_title, </span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"(?i)</span><span class="sc">\\</span><span class="st">bchandler|monica|joey|phoebe|rachel|ross</span><span class="sc">\\</span><span class="st">b"</span>), <span class="fu">str_extract</span>(spec_title, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"(?i)</span><span class="sc">\\</span><span class="st">bchandler|monica|joey|phoebe|rachel|ross</span><span class="sc">\\</span><span class="st">b"</span>), <span class="st">"None"</span>))</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(main, <span class="fu">aes</span>(<span class="at">fill =</span> main_char, <span class="at">x =</span> main_char, <span class="at">y =</span> us_views_millions)) <span class="sc">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Main Character in Title"</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Episode Views in millions"</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Friends Episode Viewership Based on Main Character in Title"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"(?i)</span><span class="sc">\\</span><span class="st">bchandler|monica|joey|phoebe|rachel|ross</span><span class="sc">\\</span><span class="st">b"</span>), <span class="st">"None"</span>))<span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(friends, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"season"</span>, <span class="st">"episode"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(season, episode, main_char, speaker) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(speaker, (<span class="st">"(Chandler Bing|Monica Geller|Joey Tribbiani|Phoebe Buffay|Rachel Green|Ross Geller)"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(speaker <span class="sc">!=</span> <span class="st">"Joey Tribbiani Sr."</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(main_char, speaker) <span class="sc">|&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">numlines =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(main_char) <span class="sc">|&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percmainlines =</span> (numlines<span class="sc">/</span><span class="fu">sum</span>(numlines))<span class="sc">*</span><span class="dv">100</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(main, <span class="fu">aes</span>(<span class="at">fill =</span> speaker, <span class="at">x =</span> speaker, <span class="at">y =</span> percmainlines)) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Speaker"</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Main Character Lines"</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Friends Episode Viewership Based on Main Character in Title"</span>) <span class="sc">+</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>main_char) <span class="sc">+</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="characanalysis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Having some characters names in the title leads to a higher mean of viewers like Monica and Chandler but having Ross’ name in the title leads to a lower mean of viewers. Having the other main characters names in the tile leads to a similar mean value as having no main character name in the title at all. Overall there is a lot of overlap and the differences are not that significant. If I had a show and I wanted to know if putting certain characters names in the titles lead to more views than I would appreciate that knowledge.</p>
+<p>Rachel consistently has a lot of lines compared to others in the cast even when she is not the main character based on the title of the episode. When a character has their name in the title, they have the highest percentage of main character lines, except in the case of Monica.</p>
 
 
 

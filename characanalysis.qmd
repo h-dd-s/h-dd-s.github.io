@@ -8,7 +8,7 @@ execute:
 
 <h1>Analyzing Friends Dialogue</h1>
 
-This data was obtained from user EmilHvitfeldt on Github. You can find the link <a href=https://https://github.com/EmilHvitfeldt/friends/tree/master/data>here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.
+This data was obtained from user EmilHvitfeldt on Github. You can find the link <a href=https://github.com/EmilHvitfeldt/friends/tree/master/data>here</a>. I will use the data to analyze how much they mention dating over the years of the show being aired and how viewership varies based on the name of the main character in the title of the episode.
 
 ```{r}
 # load packages
@@ -48,9 +48,9 @@ ggplot(friend_date, aes(x = year_aired, y = datepeppyear)) +
   )
 ```
 
-In 1995,1996, 1998, and 1999 the word date was said a lot less often in friends. I have never watched friends but I assume that during these years, the main characters were in more long term relationships. This is probably why we see a dip in 2004 as well because they are wrapping up the show and giving the characters happy endings with a partner. Again this paragraph is written by someone who has never watched friends.
+In 1995,1996, 1998, and 1999 the word date was said a lot less often in friends. I have never watched Friends but I assume that during these years, the main characters were in more long term relationships. This is probably why we see a dip in 2004 as well because they are wrapping up the show and giving the characters happy endings with a partner. Again this paragraph is written by someone who has never watched Friends.
 
-```{r}
+```{r, fig.height=10}
 # in the titles how common is it for a main character to get mentioned
 
 main <- friends_info |>
@@ -59,15 +59,28 @@ main <- friends_info |>
   mutate(spec_title = str_extract(title, "(?<=:).+"))|>
   mutate(main_char = if_else(str_detect(spec_title, 
                                 "(?i)\\bchandler|monica|joey|phoebe|rachel|ross\\b"), str_extract(spec_title, 
-                                "(?i)\\bchandler|monica|joey|phoebe|rachel|ross\\b"), "None"))
+                                "(?i)\\bchandler|monica|joey|phoebe|rachel|ross\\b"), "None"))|>
+  inner_join(friends, by = c("season", "episode")) |>
+  select(season, episode, main_char, speaker) |>
+  filter(str_detect(speaker, ("(Chandler Bing|Monica Geller|Joey Tribbiani|Phoebe Buffay|Rachel Green|Ross Geller)"))) |>
+  filter(speaker != "Joey Tribbiani Sr.") |>
+  group_by(main_char, speaker) |>
+  summarize(numlines = n()) |>
+  ungroup() |>
+  group_by(main_char) |>
+  mutate(percmainlines = (numlines/sum(numlines))*100)
   
 
-ggplot(main, aes(fill = main_char, x = main_char, y = us_views_millions)) +
-  geom_boxplot() +
+ggplot(main, aes(fill = speaker, x = speaker, y = percmainlines)) +
+  geom_col() +
   theme_bw() +
-  labs(x = "Main Character in Title",
-       y = "Episode Views in millions",
-       title = "Friends Episode Viewership Based on Main Character in Title") 
+  labs(x = "Speaker",
+       y = "Percentage of Main Character Lines",
+       title = "Friends Episode Viewership Based on Main Character in Title") +
+  facet_wrap(~main_char) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 ```
 
-Having some characters names in the title leads to a higher mean of viewers like Monica and Chandler but having Ross' name in the title leads to a lower mean of viewers. Having the other main characters names in the tile leads to a similar mean value as having no main character name in the title at all. Overall there is a lot of overlap and the differences are not that significant. If I had a show and I wanted to know if putting certain characters names in the titles lead to more views than I would appreciate that knowledge.
+Rachel consistently has a lot of lines compared to others in the cast even when she is not the main character based on the title of the episode. When a character has their name in the title, they  have the highest percentage of main character lines, except in the case of Monica.
+
+

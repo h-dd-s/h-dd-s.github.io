@@ -8,7 +8,7 @@ execute:
 
 <h1>Stanford Open Policing Project</h1>
 
-In this project, I used data compiled by Pierson et. al in 2020. The data and more about the Stanford Open Policing Project can be found on their website (\<a href="https://openpolicing.stanford.edu"\>Click Here\</a\>).
+In this project, I used data compiled by Pierson et. al in 2020. The data and more about the Stanford Open Policing Project can be found on their website (<a href="https://openpolicing.stanford.edu">Click Here</a>).
 
 ```{r}
 library(RMariaDB)
@@ -24,7 +24,6 @@ con_traffic <- DBI::dbConnect(
   password = Sys.getenv("TRAFFIC_PWD")
 )
 
-DBI::dbListTables(con_traffic)
 ```
 
 ```{sql}
@@ -35,8 +34,8 @@ SELECT subject_sex,
   subject_race,
   AVG(warning_issued) AS perc_warning
 FROM wa_statewide_2020_04_01
+WHERE subject_sex IS NOT NULL AND subject_race IS NOT NULL
 GROUP BY subject_race, subject_sex
-HAVING subject_sex IS NOT NULL AND subject_race IS NOT NULL
 ORDER BY subject_race DESC;
 
 ```
@@ -50,7 +49,8 @@ race_warning_citation |>
       y = "Percentage of Warnings",
       title = "Percentage of Warnings in Washington State Traffic Stops by Race and Sex"
     ) +
-    facet_grid(~subject_sex)
+    facet_grid(~subject_sex) + 
+    theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 ```
 
 This graph represents the proportion of traffic stops that end in warnings by race and gender in Washington State. Hispanic women seem to be slightly more likely than any other demographic to get a warning. Asian men and women are less likely to be let off with a warning than the other demographics. I am interested in how much negative stereotypes contribute to this result.
@@ -98,7 +98,7 @@ ca_sex_stops |>
     facet_grid(~city)
 ```
 
-This graph represents proportion of stops that happen throughout different times of the day in San Francisco and LA separated by gender. One very obvious trend is that men are more likely to be pulled over. The least amount of traffic stops happen around 5 AM. In LA the peak time for traffic stops is 8 PM but in San Francisco the peak time for traffic stops is arounf 11 PM.
+This graph represents proportion of stops that happen throughout different times of the day in San Francisco and LA separated by gender, in order to tell us at specific times of day what proportion of traffic stops are men and what proportion of traffic stops are women. One very obvious trend is that men are more likely to be pulled over. The least amount of traffic stops happen around 5 AM. In LA the peak time for traffic stops is 8 PM but in San Francisco the peak time for traffic stops is around 11 PM.
 
 <h3>References</h3>
 
